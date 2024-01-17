@@ -37,6 +37,12 @@ SCENE pecado1 = new_scene(
     file_content("captions/pecado1.txt")
 );
 
+SCENE tapete = new_scene(
+    "Tapete",
+    file_content("ASCII/tapete.txt"),
+    "Um tapete comum. Não tenho muito em mente pra descrever mais do que isso. \n  [SAIR / OLHAR EMBAIXO]"
+);
+
 SCENE scenes[MAX_SCENES] = {
     test,
     test_caseYes,
@@ -68,7 +74,7 @@ ANIM animations[MAX_SCENES] = {
 // (Definir da última para a primeira) //
 
 void default_rou() {
-    getch();
+    sleep(1);
 }
 
 void yes_rou() {
@@ -86,15 +92,21 @@ void no_rou() {
     getch();
 }
 
+void tapete_rou() {
+
+    ANS = {"SAIR", "OLHAR EMBAIXO"};
+    FUNCS = {default_rou, default_rou};
+    handle_choice(&tapete, 1, ans, funcs, 2);
+}
+
 void pecado1_rou() {
     music.openFromFile("audio/theme.wav");
     music.setLoop(true);
     music.play();
 
-    show(pecado1, 1);
-    ANS = {"PANO", "VASO", "PIA", "PORTA"};
-    FUNCS = {default_rou, default_rou, default_rou, default_rou};
-    handle_choice(&pecado1, 1, ans, funcs, 4);
+    ANS = {"TAPETE", "VASO", "PIA", "PORTA"};
+    FUNCS = {tapete_rou, default_rou, default_rou, default_rou};
+    while(1) {handle_choice(&pecado1, 1, ans, funcs, 4);}
 
     music.stop();
 }
@@ -102,7 +114,7 @@ void pecado1_rou() {
 void start_rou() {
     ANS = {"YES", "NO", "PECADO"};
     FUNCS = {yes_rou, no_rou, pecado1_rou};
-    handle_choice(&test, 1, ans, funcs, 3);
+    while(1) {handle_choice(&test, 1, ans, funcs, 3);}
 }
 
 #pragma endregion
