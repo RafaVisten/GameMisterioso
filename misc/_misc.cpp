@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <iostream>
 #include <cstring>
+#include <cstdlib>
 #include "../scene/_scene.hpp"
 #include "_misc.hpp"
 
@@ -9,7 +10,7 @@ void upper(char* input) {
 }
 
 void ask(char* input) {
-    move(32,0);
+    move(51,2);
     getstr(input);
     upper(input);
     refresh();
@@ -21,23 +22,21 @@ bool answer(char* input, const char* answer) {
 }
 
 void handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[], int num_options) {
-    char input[5];
+    char input[25];
 
-    while (1) {
-        show(*prompt, colorIndex);
+    show(*prompt, colorIndex);
 
-        ask(input);
-        int i;
-        for (i = 0; i < num_options; i++) {
-            if (answer(input, answers[i])) {
-                clear();
-                funcs[i]();
-                break;
-            }
+    ask(input);
+    int i;
+    for (i = 0; i < num_options; i++) {
+        if (answer(input, answers[i])) {
+            clear();
+            funcs[i]();
+            break;
         }
-        if (answer(input, "QUIT")) break;
-        clear();
     }
+    if (answer(input, "QUIT")) {endwin(); exit(0);}
+    clear();
 }
 
 char* file_content(const char* path) {

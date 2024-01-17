@@ -36,11 +36,11 @@ int main(int argc, char **argv) {
         WINDOW *mwin = newwin(height, width, 0, 0);
         refresh();
         box(mwin, 0, 0);
-        mvprintw(height/2-1, width/2 - 45, "Ajuste o tamanho do terminal para que as quatro bordas da janela do jogo sejam visíveis");
+        mvprintw(height/2-1, width/2 - 23, "Coloque a janela do terminal no modo fullscreen");
         mvprintw(height/2, width/2 - 25, "Digite \"quit\" em qualquer prompt para sair do jogo");
         mvprintw(height/2+1, width/2 - 24, "(após as mudanças, digite \"start\" para começar)");
         wrefresh(mwin);
-        move(32,2);
+        move(51,2);
         getstr(input);
         upper(input);
         refresh();

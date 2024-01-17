@@ -25,7 +25,7 @@ ANIM new_anim(const char* frame1, const char* frame2, const char* frame3) {
 void show(SCENE s, int colorIndex) {
 
     // cria janela
-    WINDOW *win = newwin(25, 105, 0, 0);
+    WINDOW *win = newwin(40, 200, 0, 0);
     refresh();
 
     // borda da janela
@@ -33,15 +33,15 @@ void show(SCENE s, int colorIndex) {
 
     // titulo da cena e arte
     wattron(win, COLOR_PAIR(colorIndex));
-    mvwprintw(win, 0, 1, "%s", s->title);
-    mvwprintw(win, 2, 0, "%s", s->art);
+    mvwprintw(win, 1, 2, "%s", s->title);
+    mvwprintw(win, 3, 0, "%s", s->art);
     wrefresh(win);
     wattroff(win, COLOR_PAIR(colorIndex));
 
     // texto
-    move(26,0);
+    move(42,2);
     attron(COLOR_PAIR(colorIndex));
-    mvprintw(26,0, "%s", s->text);
+    mvprintw(42,2, "%s", s->text);
     attroff(COLOR_PAIR(colorIndex));
     refresh();
 }
