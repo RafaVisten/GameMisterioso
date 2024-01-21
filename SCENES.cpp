@@ -14,30 +14,16 @@ sf::Music music;
 #pragma region CENAS
 //         DEFINIÇÃO DE CENAS         //
 // (A arte deve ser no máximo 191x40) //
-
-    #pragma region TESTSCENES
-
-SCENE test = new_scene(
-        "Test",
-        file_content("ASCII/test.txt"),
-        "answer? [Yes/No]"
+#pragma region Tela_Inicial
+    SCENE telaInicial = new_scene(
+        "",
+        file_content("ASCII/telaInicial.txt"),
+        ""
     );
 
-SCENE test_caseYes = new_scene(
-        "yes",
-        "it worked",
-        "cool"
-    );
+#pragma endregion
 
-SCENE test_caseNo = new_scene(
-        "no",
-        "nononononononono",
-        "NOOOOOOOOOOOO"
-    );
-
-    #pragma endregion
-
-    #pragma region PECADO1_SCENES
+#pragma region PECADO1_SCENES
 
 SCENE pecado1 = new_scene(
     "Pecado 1 - Muito antes da multidão",
@@ -60,9 +46,7 @@ SCENE vasoquebrado = new_scene(
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    test,
-    test_caseYes,
-    test_caseNo,
+    telaInicial,
     pecado1,
     tapete,
     vasoquebrado
@@ -95,6 +79,14 @@ void default_rou() {
     usleep(1);
 }
 
+#pragma region INIT_ROU
+
+
+
+
+#pragma endregion
+
+
     #pragma region PECADO1_ROU
 
 void vasoquebrado_rou() {
@@ -126,25 +118,14 @@ void pecado1_rou() {
 
     #pragma region LANDING_ROU
 
-void yes_rou() {
-    music.openFromFile("audio/comet.wav");
-    music.play();
-
-    show(test_caseYes, 1);
-    getch();
-
-    music.stop();
-}
-
-void no_rou() {
-    show(test_caseNo, 2);
-    getch();
-}
-
 void start_rou() {
-    ANS = {"YES", "NO", "PECADO"};
-    FUNCS = {yes_rou, no_rou, pecado1_rou};
-    while(1) {handle_choice(&test, 1, ans, funcs, 3);}
+    music.openFromFile("audio/theme.wav");
+    music.setLoop(true);
+    music.play();
+    showInit(telaInicial, 1);
+    ANS = {"START"};
+    FUNCS = {pecado1_rou};
+    handle_choice(&telaInicial, 1, ans, funcs, 1);
 }
 
     #pragma endregion

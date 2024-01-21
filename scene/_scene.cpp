@@ -14,6 +14,7 @@ SCENE new_scene(const char* title, const char* art, const char* text) {
     return s;
 }
 
+
 ANIM new_anim(const char* frame1, const char* frame2, const char* frame3) {
     ANIM a = (ANIM) malloc(sizeof(struct anim));
     a->frame1 = frame1;
@@ -44,6 +45,21 @@ void show(SCENE s, int colorIndex) {
     mvprintw(42,2, "%s", s->text);
     attroff(COLOR_PAIR(colorIndex));
     refresh();
+}
+
+//Função semelhante a show(), porém será utilizada apenas pra exibir a tela inicial
+void showInit(SCENE s, int colorIndex) {
+
+    // cria janela
+    WINDOW *win = newwin(100, 800, 0, 0);
+    refresh();
+
+    // titulo da cena e arte
+    wattron(win, COLOR_PAIR(colorIndex));
+    mvwprintw(win, 0, 0, "%s", s->art);
+    wrefresh(win);
+    refresh();
+
 }
 
 void showAnim(ANIM a, double sleep_time, int times) {

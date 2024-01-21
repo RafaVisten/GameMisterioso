@@ -10,6 +10,12 @@ typedef struct scene {
     const char* text;
 } * SCENE;
 
+// struct alterada para a tela inicial
+typedef struct cena {
+    const char* art;
+} * CENA;
+
+
 // cria uma animação ASCII de 3 frames
 typedef struct anim {
     const char* frame1;
@@ -25,6 +31,9 @@ ANIM new_anim(const char* frame1, const char* frame2, const char* frame3);
 
 // mostra a cena s na tela
 void show(SCENE s, int colorIndex);
+
+//mostra a cena inicial
+void showInit(SCENE s, int colorIndex);
 
 // mostra a animação a na tela
 void showAnim(ANIM a, double sleep_time, int times);
