@@ -103,9 +103,6 @@ void tapete_rou() {
 }
 
 void pecado1_rou() {
-    music.openFromFile("audio/theme.wav");
-    music.setLoop(true);
-    music.play();
 
     ANS = {"TAPETE", "VASO", "PIA", "PORTA"};
     FUNCS = {tapete_rou, vasoquebrado_rou, default_rou, default_rou};
@@ -123,9 +120,10 @@ void start_rou() {
     music.setLoop(true);
     music.play();
     showInit(telaInicial, 1);
-    ANS = {"START"};
-    FUNCS = {pecado1_rou};
-    handle_choice(&telaInicial, 1, ans, funcs, 1);
+    move(50,0);
+    getch();
+    clear();
+    pecado1_rou();
 }
 
     #pragma endregion
