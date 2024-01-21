@@ -1,5 +1,6 @@
 #include "scene/_scene.hpp"
 #include "misc/_misc.hpp"
+#include "inv/_inv.hpp"
 #include <ncurses.h>
 #include <iostream>
 #include <stdlib.h>
@@ -9,6 +10,7 @@
 #define ANS const char *ans[]
 #define FUNCS functionPtr funcs[]
 
+PlayerInventory inv;
 sf::Music music;
 
 #pragma region CENAS
@@ -82,8 +84,6 @@ void default_rou() {
 #pragma region INIT_ROU
 
 
-
-
 #pragma endregion
 
 
@@ -116,6 +116,7 @@ void pecado1_rou() {
     #pragma region LANDING_ROU
 
 void start_rou() {
+    initializeInventory(&inv);
     music.openFromFile("audio/theme.wav");
     music.setLoop(true);
     music.play();
