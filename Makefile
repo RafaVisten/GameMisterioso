@@ -2,7 +2,7 @@
 CC = g++
 
 # Source files
-SOURCES = main.cpp scene/_scene.cpp misc/_misc.cpp
+SOURCES = main.cpp scene/_scene.cpp misc/_misc.cpp inv/_inv.cpp
 
 # Executable name
 EXECUTABLE = main

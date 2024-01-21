@@ -5,6 +5,7 @@
 
 #include "scene/_scene.hpp"
 #include "misc/_misc.hpp"
+#include "inv/_inv.hpp"
 #include "SCENES.cpp"
 
 using namespace std;
@@ -55,5 +56,6 @@ int main(int argc, char **argv) {
     endwin();
     free_scenes(scenes);
     free_anim(animations);
+    cleanupInventory(&inv);
     return 0;
 }   
