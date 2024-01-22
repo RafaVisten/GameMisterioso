@@ -50,7 +50,7 @@ $ sudo dnf install ncurses-devel
 
 ## Feedback 📬
 
-Se você tiver algum feedback, por favor nos deixe saber por meio de uma pull requests..
+Se você tiver algum feedback, por favor, informe através de uma pull request ou issues.
 
 
 ## Licença 📜
