@@ -35,14 +35,26 @@ SCENE pecado1 = new_scene(
 
 SCENE tapete = new_scene(
     "Tapete",
-    file_content("ASCII/tapete2.txt"),
-    "Um tapete comum. Não tenho muito em mente pra descrever mais do que isso. \n  [SAIR / OLHAR EMBAIXO]"
+    file_content("ASCII/tapete.txt"),
+    "Um tapete comum. Não tenho muito em mente pra descrever mais do que isso. \n  [OLHAR EMBAIXO]"
 );
 
 SCENE vasoquebrado = new_scene(
     "Vaso quebrado",
     file_content("ASCII/vasoquebrado.txt"),
     "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo. [DESCARGA / COLOCAR A MAO / INVESIGAR]"
+);
+
+SCENE pia = new_scene(
+    "Pia e espelho",
+    file_content("ASCII/pia.txt"),
+    "??????????????????????????? [OLHAR ESPELHO / ABRIR TORNEIRA]"
+);
+
+SCENE chave = new_scene(
+    "Chave enferrujada",
+    file_content("ASCII/chave.txt"),
+    "Um barulho estranho e metálico começa a ressoar pelo cano: uma chave enferrujada cai da torneira.\n(\"chave\" adicionada ao inventário)"
 );
 
     #pragma endregion
@@ -86,8 +98,20 @@ void default_rou() {
 
 #pragma endregion
 
-
     #pragma region PECADO1_ROU
+
+void chave_rou() {
+    if(!hasItem(&inv, "chave")) addItem(&inv, "chave");
+    show(chave, 1);
+    move(50,0);
+    getch();
+}
+
+void pia_rou() {
+    ANS = {"OLHAR ESPELHO", "ABRIR TORNEIRA"};
+    FUNCS = {default_rou, chave_rou};
+    handle_choice(&pia, 1, ans, funcs, 2);
+}
 
 void vasoquebrado_rou() {
     ANS = {"DESCARGA", "COLOCAR A MAO", "INVESTIGAR"};
@@ -97,15 +121,15 @@ void vasoquebrado_rou() {
 
 void tapete_rou() {
 
-    ANS = {"SAIR", "OLHAR EMBAIXO"};
-    FUNCS = {default_rou, default_rou};
-    handle_choice(&tapete, 1, ans, funcs, 2);
+    ANS = {"OLHAR EMBAIXO"};
+    FUNCS = {default_rou};
+    handle_choice(&tapete, 1, ans, funcs, 1);
 }
 
 void pecado1_rou() {
 
     ANS = {"TAPETE", "VASO", "PIA", "PORTA"};
-    FUNCS = {tapete_rou, vasoquebrado_rou, default_rou, default_rou};
+    FUNCS = {tapete_rou, vasoquebrado_rou, pia_rou, default_rou};
     while(1) {handle_choice(&pecado1, 1, ans, funcs, 4);}
 
     music.stop();
