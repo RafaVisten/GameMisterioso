@@ -175,7 +175,7 @@ void colocarmao_rou() {
 }
 
 void vasoquebrado_rou() {
-    ANS = {"DESCARGA", "COLOCAR A MÃO", "INVESTIGAR"};
+    ANS = {"DESCARGA", "COLOCAR A MAO", "INVESTIGAR"};
     FUNCS = {default_rou, colocarmao_rou, default_rou};
     while(handle_choice(&vasoquebrado, 1, ans, funcs, 3));
 }
