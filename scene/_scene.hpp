@@ -32,6 +32,9 @@ ANIM new_anim(const char* frame1, const char* frame2, const char* frame3);
 // mostra a cena s na tela
 void show(SCENE s, int colorIndex);
 
+// mostra uma cena que não tem opções para o usuário
+void showQuickScene(SCENE s, int colorIndex);
+
 //mostra a cena inicial
 void showInit(SCENE s, int colorIndex);
 

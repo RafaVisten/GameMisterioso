@@ -10,7 +10,7 @@ void upper(char* input) {
 }
 
 void ask(char* input) {
-    move(51,2);
+    move(51,0);
     getstr(input);
     upper(input);
     refresh();
@@ -21,7 +21,7 @@ bool answer(char* input, const char* answer) {
     else return false;
 }
 
-void handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[], int num_options) {
+bool handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[], int num_options) {
     char input[25];
 
     show(*prompt, colorIndex);
@@ -32,11 +32,13 @@ void handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functio
         if (answer(input, answers[i])) {
             clear();
             funcs[i]();
-            break;
+            return true;
         }
     }
     if (answer(input, "QUIT")) {endwin(); exit(0);}
+    if (answer(input, "")) {clear(); return false;}
     clear();
+    return true;
 }
 
 char* file_content(const char* path) {

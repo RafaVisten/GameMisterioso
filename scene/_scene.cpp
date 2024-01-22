@@ -40,11 +40,18 @@ void show(SCENE s, int colorIndex) {
     wattroff(win, COLOR_PAIR(colorIndex));
 
     // texto
-    move(42,2);
+    move(42,0);
     attron(COLOR_PAIR(colorIndex));
-    mvprintw(42,2, "%s", s->text);
+    mvprintw(42,0, "%s", s->text);
     attroff(COLOR_PAIR(colorIndex));
     refresh();
+}
+
+void showQuickScene(SCENE s, int colorIndex) {
+    show(s, colorIndex);
+    move(50,0);
+    getch();
+    clear();
 }
 
 //Função semelhante a show(), porém será utilizada apenas pra exibir a tela inicial
@@ -93,7 +100,7 @@ void free_anim(ANIM animations[MAX_SCENES]) {
 void blink(SCENE sc, int colorIndex, double seconds, int times) {
     unsigned int ms = (unsigned int)(seconds * 1000000); // conversão para milisegundos
     for(int i = 0; i < times; i++) {
-        show(sc,1);
+        show(sc,colorIndex);
         usleep(ms);
         clear();
         refresh();

@@ -29,20 +29,38 @@ sf::Music music;
 
 SCENE pecado1 = new_scene(
     "Pecado 1 - Muito antes da multidão",
-    file_content("ASCII/pecado1.txt"),
+    file_content("ASCII/banheiro.txt"),
     file_content("captions/pecado1.txt")
 );
 
 SCENE tapete = new_scene(
     "Tapete",
     file_content("ASCII/tapete.txt"),
-    "Um tapete comum. Não tenho muito em mente pra descrever mais do que isso. \n  [OLHAR EMBAIXO]"
+    "Um tapete comum. Não tenho muito em mente pra descrever mais do que isso. \n\n[OLHAR EMBAIXO]"
+);
+
+SCENE poca = new_scene(
+    "ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME ITS ME",
+    file_content("ASCII/poça.txt"),
+    "Embaixo do tapete há uma poça de água. Vejo meu reflexo.\nSou eu. De fato, não há como não ser."
 );
 
 SCENE vasoquebrado = new_scene(
     "Vaso quebrado",
-    file_content("ASCII/vasoquebrado.txt"),
-    "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo. [DESCARGA / COLOCAR A MAO / INVESIGAR]"
+    file_content("ASCII/vaso.txt"),
+    "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo.\n\n[DESCARGA / COLOCAR A MAO / INVESIGAR]"
+);
+
+SCENE colocarmao = new_scene(
+    "Vaso quebrado",
+    file_content("ASCII/vaso.txt"),
+    "Resolvo colocar a mão no vaso. Esse tipo de atitude inpensada não é muito comum pra mim."
+);
+
+SCENE mao = new_scene(
+    "Mão decepada",
+    file_content("ASCII/mao.txt"),
+    "Definitivamente não foi uma decisão muito boa. \n\n(\"mao esquerda\" adicionada ao inventário)"
 );
 
 SCENE pia = new_scene(
@@ -54,16 +72,37 @@ SCENE pia = new_scene(
 SCENE chave = new_scene(
     "Chave enferrujada",
     file_content("ASCII/chave.txt"),
-    "Um barulho estranho e metálico começa a ressoar pelo cano: uma chave enferrujada cai da torneira.\n(\"chave\" adicionada ao inventário)"
+    "Um barulho estranho e metálico começa a ressoar pelo cano: uma chave enferrujada cai da torneira.\n\n(\"chave\" adicionada ao inventário)"
+);
+
+SCENE espelho = new_scene(
+    "Figura estranha",
+    file_content("ASCII/noespelho.txt"),
+    "Esse não sou eu."
+);
+
+SCENE porta = new_scene(
+    "Porta de madeira comum",
+    file_content("ASCII/porta.txt"),
+    "Uma porta velha de madeira \n\n[TENTAR ABRIR]"
+);
+
+SCENE saida = new_scene(
+    "A porta se abre",
+    file_content("ASCII/porta.txt"),
+    "Abro a porta na expectativa falha de me encontrar. Saio sabendo que não posso escapar quem eu sou. Saio sabendo que não consigo amar como fui criado. \n\nir para o próximo capítulo? [SIM/NAO]"
+);
+
+SCENE saida_fail = new_scene(
+    "Nada acontece",
+    file_content("ASCII/porta.txt"),
+    "Está emperrada e sem sinal de mudança quando tento forçar a porta."
 );
 
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,
-    pecado1,
-    tapete,
-    vasoquebrado
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,colocarmao,mao,porta,saida,saida_fail
 };
 
 #pragma endregion
@@ -89,47 +128,73 @@ ANIM animations[MAX_SCENES] = {
 //         DEFINIÇÃO DE ROTINAS        //
 // (Definir da última para a primeira) //
 
-void default_rou() {
-    usleep(1);
-}
+void default_rou() {}
 
 #pragma region INIT_ROU
 
 
 #pragma endregion
 
+void pecado2_rou() {} // pecado dois vai começar aqui
+
     #pragma region PECADO1_ROU
 
+void abrirporta_rou() {
+    if(hasItem(&inv, "chave")) {
+        ANS = {"SIM", "NAO"};
+        FUNCS = {pecado2_rou, default_rou};
+        while(handle_choice(&saida, 1, ans, funcs, 2));
+    } else showQuickScene(saida_fail, 1);
+}
+
+void porta_rou() {
+    ANS = {"TENTAR ABRIR"};
+    FUNCS = {abrirporta_rou};
+    while(handle_choice(&porta, 1, ans, funcs, 1));
+}
+
+void espelho_rou() {
+    showQuickScene(espelho, 1);
+}
 void chave_rou() {
     if(!hasItem(&inv, "chave")) addItem(&inv, "chave");
-    show(chave, 1);
-    move(50,0);
-    getch();
+    showQuickScene(chave, 1);
 }
 
 void pia_rou() {
     ANS = {"OLHAR ESPELHO", "ABRIR TORNEIRA"};
-    FUNCS = {default_rou, chave_rou};
-    handle_choice(&pia, 1, ans, funcs, 2);
+    FUNCS = {espelho_rou, chave_rou};
+    while(handle_choice(&pia, 1, ans, funcs, 2));
+}
+
+void colocarmao_rou() {
+    showQuickScene(colocarmao, 1);
+    blink(mao, 1, 0.125, 8);
+    showQuickScene(mao, 2);
+    if(!hasItem(&inv, "mao esquerda")) addItem(&inv, "mao esquerda");
 }
 
 void vasoquebrado_rou() {
     ANS = {"DESCARGA", "COLOCAR A MAO", "INVESTIGAR"};
-    FUNCS = {default_rou, default_rou, default_rou};
-    handle_choice(&vasoquebrado, 1, ans, funcs, 3);
+    FUNCS = {default_rou, colocarmao_rou, default_rou};
+    while(handle_choice(&vasoquebrado, 1, ans, funcs, 3));
+}
+
+void poca_rou() {
+    showQuickScene(poca, 2);
 }
 
 void tapete_rou() {
 
     ANS = {"OLHAR EMBAIXO"};
-    FUNCS = {default_rou};
-    handle_choice(&tapete, 1, ans, funcs, 1);
+    FUNCS = {poca_rou};
+    while(handle_choice(&tapete, 1, ans, funcs, 1));
 }
 
 void pecado1_rou() {
 
     ANS = {"TAPETE", "VASO", "PIA", "PORTA"};
-    FUNCS = {tapete_rou, vasoquebrado_rou, pia_rou, default_rou};
+    FUNCS = {tapete_rou, vasoquebrado_rou, pia_rou, porta_rou};
     while(1) {handle_choice(&pecado1, 1, ans, funcs, 4);}
 
     music.stop();
