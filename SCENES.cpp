@@ -48,7 +48,7 @@ SCENE poca = new_scene(
 SCENE vasoquebrado = new_scene(
     "Vaso quebrado",
     file_content("ASCII/vaso.txt"),
-    "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo.\n\n[DESCARGA / COLOCAR A MAO / INVESIGAR]"
+    "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo.\n\n[DESCARGA / COLOCAR A MAO / INVESTIGAR]"
 );
 
 SCENE colocarmao = new_scene(
