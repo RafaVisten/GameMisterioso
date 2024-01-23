@@ -10,8 +10,9 @@
 #define ANS const char *ans[]
 #define FUNCS functionPtr funcs[]
 
-PlayerInventory inv;
-sf::Music music;
+LList inv;
+sf::Music music; // canal de audio para a música de fundo
+sf ::Music sfx; // canal de audio para efeitos sonoros
 
 #pragma region CENAS
 //         DEFINIÇÃO DE CENAS         //
@@ -45,16 +46,16 @@ SCENE poca = new_scene(
     "Embaixo do tapete há uma poça de água. Vejo meu reflexo.\nSou eu. De fato, não há como não ser."
 );
 
+SCENE assimilacao = new_scene(
+    "Assimilação completa",
+    file_content("ASCII/assimilacao.txt"),
+    file_content("captions/assimilacao.txt")
+);
+
 SCENE vasoquebrado = new_scene(
     "Vaso quebrado",
     file_content("ASCII/vaso.txt"),
     "Nunca confiei nesse vaso. Não sinto vontade alguma de usá-lo. Mas ele me convida a fazer algo.\n\n[DESCARGA / COLOCAR A MAO / INVESTIGAR]"
-);
-
-SCENE colocarmao = new_scene(
-    "Vaso quebrado",
-    file_content("ASCII/vaso.txt"),
-    "Resolvo colocar a mão no vaso. Esse tipo de atitude inpensada não é muito comum pra mim."
 );
 
 SCENE mao = new_scene(
@@ -90,19 +91,13 @@ SCENE porta = new_scene(
 SCENE saida = new_scene(
     "A porta se abre",
     file_content("ASCII/porta.txt"),
-    "Abro a porta na expectativa falha de me encontrar. Saio sabendo que não posso escapar quem eu sou. Saio sabendo que não consigo amar como fui criado. \n\nir para o próximo capítulo? [SIM/NAO]"
-);
-
-SCENE saida_fail = new_scene(
-    "Nada acontece",
-    file_content("ASCII/porta.txt"),
-    "Está emperrada e sem sinal de mudança quando tento forçar a porta."
+    "Abro a porta na expectativa falha de me encontrar. Saio sabendo que não posso escapar quem eu sou. Saio sabendo que não consigo amar como fui criado. \n\n(Digite \"ABRIR\" para ir para o próximo capítulo ou aperte <ENTER> para cancelar)"
 );
 
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,colocarmao,mao,porta,saida,saida_fail
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao
 };
 
 #pragma endregion
@@ -117,8 +112,14 @@ ANIM test_anim = new_anim(
         "THREE"
 );
 
+ANIM monstro_anim = new_anim(
+    file_content("ASCII/monstro_anim/F1.txt"),
+    file_content("ASCII/monstro_anim/F2.txt"),
+    file_content("ASCII/monstro_anim/F3.txt")
+);
+
 ANIM animations[MAX_SCENES] = {
-    test_anim
+    test_anim,monstro_anim
 };
 
 #pragma endregion
@@ -141,10 +142,10 @@ void pecado2_rou() {} // pecado dois vai começar aqui
 
 void abrirporta_rou() {
     if(hasItem(&inv, "chave")) {
-        ANS = {"SIM", "NAO"};
-        FUNCS = {pecado2_rou, default_rou};
-        while(handle_choice(&saida, 1, ans, funcs, 2));
-    } else showQuickScene(saida_fail, 1);
+        ANS = {"ABRIR"};
+        FUNCS = {pecado2_rou};
+        while(handle_choice(&saida, 1, ans, funcs, 1));
+    } else changeCapt("Parece estar trancada ou emperrada, nada acontece quando tento forçar a porta.");
 }
 
 void porta_rou() {
@@ -154,7 +155,12 @@ void porta_rou() {
 }
 
 void espelho_rou() {
-    showQuickScene(espelho, 1);
+    if(!hasItem(&inv, "monstro_morto")) {
+        showQuickScene(espelho, 1);
+    } else {
+        changeCapt("A criatura afogada aparece ao meu lado, flutuando lentamente, e então suas vozes dizem: \n\"Espero que minha ausência te dê a paz que meu amor não pode\".\nApós dizer tais palavras, olho no espelho novamente e vejo que meu rosto assimilou tal criatura.");
+        showQuickScene(assimilacao, 1);
+    }
 }
 void chave_rou() {
     if(!hasItem(&inv, "chave")) addItem(&inv, "chave");
@@ -167,16 +173,42 @@ void pia_rou() {
     while(handle_choice(&pia, 1, ans, funcs, 2));
 }
 
+void investigar_rou(){
+    if(!hasItem(&inv, "monstro")) {
+        addItem(&inv, "monstro");
+        sfx.openFromFile("audio/jumpscare1.wav");
+        music.pause();
+        sfx.play();
+        showAnim(monstro_anim, 2, 0.3, 5); 
+        sfx.stop();
+        music.play();
+    } 
+    changeCapt("Tem alguma coisa morando no meu vaso. Legal.");
+    clear();
+}
+
 void colocarmao_rou() {
-    showQuickScene(colocarmao, 1);
-    blink(mao, 1, 0.125, 8);
-    showQuickScene(mao, 2);
-    if(!hasItem(&inv, "mao esquerda")) addItem(&inv, "mao esquerda");
+    if(!hasItem(&inv, "mao esquerda")) {
+        changeCapt("Resolvo colocar a mão no vaso. Esse tipo de atitude inpensada não é muito comum pra mim.");
+        blink(mao, 1, 0.125, 8);
+        showQuickScene(mao, 2);
+        addItem(&inv, "mao esquerda");
+    } else changeCapt("Definitivamente não foi uma decisão muito boa.");
+}
+
+void descarga_rou() {
+
+    if(!hasItem(&inv, "monstro")) changeCapt("Aperto a descarga... Não há mudança alguma.");
+    else {
+        changeCapt("Parece que o que quer q eu tenha visto foi levado embora...");
+        removeItem(&inv, "monstro");
+        addItem(&inv, "monstro_morto");
+    }
 }
 
 void vasoquebrado_rou() {
     ANS = {"DESCARGA", "COLOCAR A MAO", "INVESTIGAR"};
-    FUNCS = {default_rou, colocarmao_rou, default_rou};
+    FUNCS = {descarga_rou, colocarmao_rou, investigar_rou};
     while(handle_choice(&vasoquebrado, 1, ans, funcs, 3));
 }
 
