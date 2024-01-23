@@ -10,13 +10,13 @@ struct Node {
     struct Node* next;
 };
 
-struct PlayerInventory {
+struct LList {
     struct Node* head;
 };
 
-void initializeInventory(struct PlayerInventory* inventory);
-int hasItem(const struct PlayerInventory* inventory, const char* item);
-void addItem(struct PlayerInventory* inventory, const char* item);
-void removeItem(struct PlayerInventory* inventory, const char* item);
-void cleanupInventory(struct PlayerInventory* inventory);
+void initializeInventory(struct LList* inventory);
+int hasItem(const struct LList* inventory, const char* item);
+void addItem(struct LList* inventory, const char* item);
+void removeItem(struct LList* inventory, const char* item);
+void cleanupInventory(struct LList* inventory);
 #endif

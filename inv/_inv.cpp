@@ -1,10 +1,10 @@
 #include "_inv.hpp"
 
-void initializeInventory(struct PlayerInventory* inventory) {
+void initializeInventory(struct LList* inventory) {
     inventory->head = NULL;
 }
 
-int hasItem(const struct PlayerInventory* inventory, const char* item) {
+int hasItem(const struct LList* inventory, const char* item) {
     const struct Node* current = inventory->head;
     while (current != NULL) {
         if (strcmp(current->data, item) == 0) {
@@ -15,7 +15,7 @@ int hasItem(const struct PlayerInventory* inventory, const char* item) {
     return 0;  // Item not found
 }
 
-void addItem(struct PlayerInventory* inventory, const char* item) {
+void addItem(struct LList* inventory, const char* item) {
     if (!hasItem(inventory, item)) {
         struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
         if (newNode == NULL) {
@@ -39,7 +39,7 @@ void addItem(struct PlayerInventory* inventory, const char* item) {
     }
 }
 
-void removeItem(struct PlayerInventory* inventory, const char* item) {
+void removeItem(struct LList* inventory, const char* item) {
     struct Node* current = inventory->head;
     struct Node* prev = NULL;
 
@@ -65,7 +65,7 @@ void removeItem(struct PlayerInventory* inventory, const char* item) {
     printf("Item not found in the inventory.\n");
 }
 
-void cleanupInventory(struct PlayerInventory* inventory) {
+void cleanupInventory(struct LList* inventory) {
     struct Node* current = inventory->head;
     struct Node* nextNode;
 

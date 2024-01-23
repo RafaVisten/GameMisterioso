@@ -54,6 +54,14 @@ void showQuickScene(SCENE s, int colorIndex) {
     clear();
 }
 
+void changeCapt(const char *capt) {
+    move(42,0);
+    mvprintw(42,0, "%s", capt);
+    refresh();
+    getch();
+    clear();
+}
+
 //Função semelhante a show(), porém será utilizada apenas pra exibir a tela inicial
 void showInit(SCENE s, int colorIndex) {
 
@@ -69,10 +77,11 @@ void showInit(SCENE s, int colorIndex) {
 
 }
 
-void showAnim(ANIM a, double sleep_time, int times) {
+void showAnim(ANIM a, int colorIndex, double sleep_time, int times) {
     unsigned int ms = (unsigned int)(sleep_time * 1000000); // conversão para milisegundos
     clear();
     for(int i = 0; i < times; i++) {
+        attron(COLOR_PAIR(colorIndex));
         mvprintw(0,0,"%s", a->frame1);
         refresh();
         usleep(ms);
@@ -85,6 +94,7 @@ void showAnim(ANIM a, double sleep_time, int times) {
         refresh();
         usleep(ms);
         clear();
+        attroff(COLOR_PAIR(colorIndex));
     }
 
 }
