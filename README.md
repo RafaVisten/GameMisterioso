@@ -1,5 +1,5 @@
 
-# Gehenna  🔱
+# 「 GEHENNA 」
  
 Este repositório concentra todo o código fonte do nosso projeto final da disciplina Algoritmos e Estrutura de Dados I.
 
