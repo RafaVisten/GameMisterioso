@@ -200,7 +200,7 @@ void descarga_rou() {
 
     if(!hasItem(&inv, "monstro")) changeCapt("Aperto a descarga... Não há mudança alguma.");
     else {
-        changeCapt("Parece que o que quer q eu tenha visto foi levado embora...");
+        changeCapt("Parece que o que quer que eu tenha visto foi levado embora...");
         removeItem(&inv, "monstro");
         addItem(&inv, "monstro_morto");
     }
@@ -213,7 +213,14 @@ void vasoquebrado_rou() {
 }
 
 void poca_rou() {
+    music.pause();
+    sfx.openFromFile("audio/whispering.wav");
+    sfx.setLoop(true);
+    sfx.play();
     showQuickScene(poca, 2);
+    sfx.stop();
+    sfx.setLoop(false);
+    music.play();
 }
 
 void tapete_rou() {
