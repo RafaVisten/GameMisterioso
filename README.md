@@ -87,16 +87,5 @@ Para iniciar o jogo rode no terminal o seguinte comando após a compilação:
 Este programa está licenciado sob a licença
 [MIT](https://choosealicense.com/licenses/mit/).
 
-
-
-## Contribuindo
-
-Contribuições são sempre bem-vindas!
-
-Veja `contribuindo.md` para saber como começar.
-
-Por favor, siga o `código de conduta` desse projeto.
-
-
 ## Feedback 📬
 Se você tiver algum feedback, por favor, informe através de uma pull request ou issues.
