@@ -101,8 +101,9 @@ SCENE pecado2 = new_scene(
 );
 
 SCENE filaEspera = new_scene(
-    
-
+    "Entrar na fila",
+    file_content("ASCII"),
+    file_content("Posso tanto andar para ver a fila ou esperar aqui.")
 );
 
     #pragma endregion
@@ -155,7 +156,7 @@ void entrarFila_rou(){
         changeCapt(file_content("captions/criaturasVag.txt"));
         changeCapt("As criaturas vagantes então ficam em silêncio.");
     }else{
-        changeCapt("Posso tanto andar para ver a fila ou esperar aqui.");
+        changeCapt();
         
     }
 }
