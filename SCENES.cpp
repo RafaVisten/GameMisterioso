@@ -102,7 +102,7 @@ SCENE pecado2 = new_scene(
 
 SCENE filaEspera = new_scene(
     "Entrar na fila",
-    file_content("ASCII"),
+    file_content("ASCII/fila1.txt"),
     file_content("Posso tanto andar para ver a fila ou esperar aqui.")
 );
 
