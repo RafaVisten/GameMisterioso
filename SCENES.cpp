@@ -155,7 +155,6 @@ void criaturasVagantes_rou(){
         changeCapt("As criaturas já não mais estavam no lugar de antes, vejo-as agora na fila em que buscavam. Vou em direção à eles.");
     }
 
-
 }
 
 void pecado2_rou() {
@@ -189,7 +188,7 @@ void espelho_rou() {
         showQuickScene(espelho, 1);
     } else {
         changeCapt("A criatura afogada aparece ao meu lado, flutuando lentamente, e então suas vozes dizem: \n\"Espero que minha ausência te dê a paz que meu amor não pode\".\nApós dizer tais palavras, olho no espelho novamente e vejo que meu rosto assimilou tal criatura.");
-        showQuickScene(assimilacao, 1);
+        showQuickScene(assimilacao, 2);
     }
 }
 void chave_rou() {
