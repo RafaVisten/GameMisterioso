@@ -102,14 +102,14 @@ SCENE pecado2 = new_scene(
 
 SCENE filaEspera = new_scene(
     "Entrar na fila",
-    file_content("ASCII"),
+    file_content("ASCII/fila1.txt"),
     file_content("Posso tanto andar para ver a fila ou esperar aqui.")
 );
 
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2, filaEspera
 };
 
 #pragma endregion
@@ -156,7 +156,7 @@ void entrarFila_rou(){
         changeCapt(file_content("captions/criaturasVag.txt"));
         changeCapt("As criaturas vagantes então ficam em silêncio.");
     }else{
-        changeCapt();
+        
         
     }
 }
@@ -182,7 +182,7 @@ void pecado2_rou() {
     changeCapt(file_content("captions/pecado2-1.txt"));
     changeCapt(file_content("captions/pecado2-2.txt"));
     ANS = {"EDIFICIO DA LUZ", "CRIATURAS VAGANTES", "ENTRAR FILA"};
-    FUNCS = {default_rou, criaturasVagantes_rou, default_rou};
+    FUNCS = {default_rou, criaturasVagantes_rou, entrarFila_rou};
     while(1) {handle_choice(&pecado2, 1, ans, funcs, 3);}
     music.stop();
 } 
