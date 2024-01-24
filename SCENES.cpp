@@ -100,6 +100,10 @@ SCENE pecado2 = new_scene(
     file_content("captions/pecado2-3.txt")
 );
 
+SCENE filaEspera = new_scene(
+    
+
+);
 
 
     #pragma endregion
@@ -143,6 +147,20 @@ void default_rou() {}
 
 
 #pragma endregion
+
+void entrarFila_rou(){
+    if(!(hasItem(&inv, "FarolLuz"))){
+        changeCapt("Vejo as criaturas durante sua caminhada para a fila gigante. Pergunto a elas qual o motivo dessa fila toda.");
+        changeCapt("-Sinceramente não sabemos. Mas qualquer coisa é melhor do que viver sem sentir. ");
+        changeCapt("Percebo que todas elas falam em unissono, como se fossem um só corpo e mente.");
+        changeCapt(file_content("captions/criaturasVag.txt"));
+        changeCapt("As criaturas vagantes então ficam em silêncio.");
+    }else{
+        changeCapt("Posso tanto andar para ver a fila ou esperar aqui.");
+        
+    }
+}
+
 
 void criaturasVagantes_rou(){
     if(!(hasItem(&inv, "FarolLuz"))){
