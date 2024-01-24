@@ -103,7 +103,7 @@ SCENE pecado2 = new_scene(
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao, pecado2
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2
 };
 
 #pragma endregion
@@ -175,8 +175,16 @@ void espelho_rou() {
     }
 }
 void chave_rou() {
-    if(!hasItem(&inv, "chave")) addItem(&inv, "chave");
-    showQuickScene(chave, 1);
+    if(!hasItem(&inv, "chave")) {
+        sfx.openFromFile("audio/faucet.wav");
+        music.pause();
+        sfx.play();
+        addItem(&inv, "chave");
+        showQuickScene(chave, 1);
+    } else {
+        changeCapt("Não há mais nada para fazer aqui.");
+    }
+    music.play();
 }
 
 void pia_rou() {
@@ -202,9 +210,14 @@ void investigar_rou(){
 void colocarmao_rou() {
     if(!hasItem(&inv, "mao esquerda")) {
         changeCapt("Resolvo colocar a mão no vaso. Esse tipo de atitude inpensada não é muito comum pra mim.");
-        blink(mao, 1, 0.125, 8);
+        music.pause();
+        sfx.openFromFile("audio/scream.wav");
+        sfx.play();
+        blink(mao, 1, 0.0625, 16);
         showQuickScene(mao, 2);
         addItem(&inv, "mao esquerda");
+        sfx.stop();
+        music.play();
     } else changeCapt("Definitivamente não foi uma decisão muito boa.");
 }
 
@@ -212,6 +225,13 @@ void descarga_rou() {
 
     if(!hasItem(&inv, "monstro")) changeCapt("Aperto a descarga... Não há mudança alguma.");
     else {
+        music.pause();
+        sfx.openFromFile("audio/toiletmonster.wav");
+        sfx.play();
+        clear();
+        refresh();
+        sleep(4);
+        music.play();
         changeCapt("Parece que o que quer que eu tenha visto foi levado embora...");
         removeItem(&inv, "monstro");
         addItem(&inv, "monstro_morto");
