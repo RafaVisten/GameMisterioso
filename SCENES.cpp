@@ -100,6 +100,8 @@ SCENE pecado2 = new_scene(
     file_content("captions/pecado2-3.txt")
 );
 
+
+
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -142,15 +144,31 @@ void default_rou() {}
 
 #pragma endregion
 
+void criaturasVagantes_rou(){
+    if(!(hasItem(&inv, "FarolLuz"))){
+        changeCapt("Vejo as criaturas durante sua caminhada para a fila gigante. Pergunto a elas qual o motivo dessa fila toda.");
+        changeCapt("-Sinceramente não sabemos. Mas qualquer coisa é melhor do que viver sem sentir. ");
+        changeCapt("Percebo que todas elas falam em unissono, como se fossem um só corpo e mente.");
+        changeCapt(file_content("captions/criaturasVag.txt"));
+        changeCapt("As criaturas vagantes então ficam em silêncio.");
+    }else{
+        changeCapt("As criaturas já não mais estavam no lugar de antes, vejo-as agora na fila em que buscavam. Vou em direção à eles.");
+    }
+
+
+}
+
 void pecado2_rou() {
     changeCapt(file_content("captions/pecado2-1.txt"));
     changeCapt(file_content("captions/pecado2-2.txt"));
-    ANS = {"Ir até o edificio da luz", "Ver criaturas vagantes", "Entrar na fila"};
-    FUNCS = {default_rou, default_rou, default_rou};
+    ANS = {"EDIFICIO DA LUZ", "CRIATURAS VAGANTES", "ENTRAR FILA"};
+    FUNCS = {default_rou, criaturasVagantes_rou, default_rou};
     while(1) {handle_choice(&pecado2, 1, ans, funcs, 3);}
 } // pecado dois vai começar aqui
 
-    #pragma region PECADO1_ROU
+
+
+#pragma region PECADO1_ROU
 
 void abrirporta_rou() {
     if(hasItem(&inv, "chave")) {
