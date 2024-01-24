@@ -105,7 +105,6 @@ SCENE filaEspera = new_scene(
 
 );
 
-
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -176,13 +175,16 @@ void criaturasVagantes_rou(){
 }
 
 void pecado2_rou() {
+    music.openFromFile("audio/theme2.wav");
+    music.setLoop(true);
+    music.play();
     changeCapt(file_content("captions/pecado2-1.txt"));
     changeCapt(file_content("captions/pecado2-2.txt"));
     ANS = {"EDIFICIO DA LUZ", "CRIATURAS VAGANTES", "ENTRAR FILA"};
     FUNCS = {default_rou, criaturasVagantes_rou, default_rou};
     while(1) {handle_choice(&pecado2, 1, ans, funcs, 3);}
-} // pecado dois vai começar aqui
-
+    music.stop();
+} 
 
 
 #pragma region PECADO1_ROU
