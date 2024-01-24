@@ -103,7 +103,7 @@ SCENE pecado2 = new_scene(
 SCENE filaEspera = new_scene(
     "Entrar na fila",
     file_content("ASCII/fila1.txt"),
-    file_content("Posso tanto andar para ver a fila ou esperar aqui.")
+    "Posso tanto andar para ver a fila ou esperar aqui.\n\n [ESPERAR, ANDAR]"
 );
 
     #pragma endregion
@@ -148,16 +148,34 @@ void default_rou() {}
 
 #pragma endregion
 
+void esperarFila_rou(){
+    changeCapt("Entro na fila e espero alguns minutos.");
+    sleep(10);
+    changeCapt("Não parece ter mudança alguma.");
+}
+void andarFila_rou(){
+    changeCapt(file_content("captions/andarFila.txt"));
+    changeCapt("'Você é tão forte e quieto, que eu esqueço que você sofre.'");
+    changeCapt("Acho melhor para de pensar, deveria ir ver o que há no começo da fila.");
+    changeCapt("Caminho em direção ao começo da fila. Não mais me preocupo com aqueles atrás de mim. ");
+    changeCapt(file_content("captions/andarFila2.txt"));
+    changeCapt("- Essa informação é confidencial para aqueles que entrarem.");
+    changeCapt("Estranho.");
+    changeCapt("- Por favor volte para o final da fila. Não irei mais falar.");
+}
+
+
 void entrarFila_rou(){
-    if(!(hasItem(&inv, "FarolLuz"))){
+    if((hasItem(&inv, "FarolLuz"))){
         changeCapt("Vejo as criaturas durante sua caminhada para a fila gigante. Pergunto a elas qual o motivo dessa fila toda.");
         changeCapt("-Sinceramente não sabemos. Mas qualquer coisa é melhor do que viver sem sentir. ");
         changeCapt("Percebo que todas elas falam em unissono, como se fossem um só corpo e mente.");
         changeCapt(file_content("captions/criaturasVag.txt"));
         changeCapt("As criaturas vagantes então ficam em silêncio.");
     }else{
-        
-        
+        ANS = {"ESPERAR", "ANDAR"};
+        FUNCS = {esperarFila_rou, andarFila_rou};
+        while(handle_choice(&filaEspera, 1, ans, funcs, 2));
     }
 }
 
