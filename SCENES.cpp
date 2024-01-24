@@ -94,10 +94,16 @@ SCENE saida = new_scene(
     "Abro a porta na expectativa falha de me encontrar. Saio sabendo que não posso escapar quem eu sou. Saio sabendo que não consigo amar como fui criado. \n\n(Digite \"ABRIR\" para ir para o próximo capítulo ou aperte <ENTER> para cancelar)"
 );
 
+SCENE pecado2 = new_scene(
+    "Pecado 2 - 'Tu me lembras um pecador.'",
+    file_content("ASCII/pecado2Init.txt"),
+    file_content("captions/pecado2-3.txt")
+);
+
     #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao, pecado2
 };
 
 #pragma endregion
@@ -136,7 +142,13 @@ void default_rou() {}
 
 #pragma endregion
 
-void pecado2_rou() {} // pecado dois vai começar aqui
+void pecado2_rou() {
+    changeCapt(file_content("captions/pecado2-1.txt"));
+    changeCapt(file_content("captions/pecado2-2.txt"));
+    ANS = {"Ir até o edificio da luz", "Ver criaturas vagantes", "Entrar na fila"};
+    FUNCS = {default_rou, default_rou, default_rou};
+    while(1) {handle_choice(&pecado2, 1, ans, funcs, 3);}
+} // pecado dois vai começar aqui
 
     #pragma region PECADO1_ROU
 
