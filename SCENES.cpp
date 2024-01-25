@@ -168,7 +168,7 @@ void edificiodaluz_rou() {
 
 void esperarFila_rou(){
     changeCapt("Entro na fila e espero alguns minutos.");
-    sleep(10);
+    sleep(3);
     changeCapt("Não parece ter mudança alguma.");
 }
 void andarFila_rou(){
@@ -184,7 +184,7 @@ void andarFila_rou(){
 
 
 void entrarFila_rou(){
-    if((hasItem(&inv, "FarolLuz"))){
+    if(!(hasItem(&inv, "FarolLuz"))){
         changeCapt("Vejo as criaturas durante sua caminhada para a fila gigante. Pergunto a elas qual o motivo dessa fila toda.");
         changeCapt("-Sinceramente não sabemos. Mas qualquer coisa é melhor do que viver sem sentir. ");
         changeCapt("Percebo que todas elas falam em unissono, como se fossem um só corpo e mente.");
