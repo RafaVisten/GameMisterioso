@@ -165,6 +165,12 @@ void edificiodaluz_rou() {
     showQuickScene(escadaria, 1);
     addItem(&inv, "FarolLuz");
     showQuickScene(yellowking, 1);
+    if(hasItem(&inv, "monstro_morto")){
+        changeCapt("-Tu me lembras de um pecador. Vejo pelo fantasma ao seu lado de que de fato se trata de um.\n A violência é o primeiro pecado de todos.");
+    }
+    changeCapt(file_content("captions/edificiodaluz-2.txt"));
+    changeCapt(file_content("captions/edificiodaluz-3.txt"));
+    changeCapt(file_content("captions/edificiodaluz-4.txt"));
 }
 
 void esperarFila_rou(){
