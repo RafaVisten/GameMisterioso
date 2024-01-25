@@ -163,6 +163,7 @@ void default_rou() {}
 void edificiodaluz_rou() {
     changeCapt(file_content("captions/edificiodaluz-1.txt"));
     showQuickScene(escadaria, 1);
+    addItem(&inv, "FarolLuz");
     showQuickScene(yellowking, 1);
 }
 
