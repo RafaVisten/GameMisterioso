@@ -93,11 +93,26 @@ SCENE saida = new_scene(
     file_content("ASCII/porta.txt"),
     "Abro a porta na expectativa falha de me encontrar. Saio sabendo que não posso escapar quem eu sou. Saio sabendo que não consigo amar como fui criado. \n\n(Digite \"ABRIR\" para ir para o próximo capítulo ou aperte <ENTER> para cancelar)"
 );
+    #pragma endregion
+
+#pragma region PECADO2_SCENES
 
 SCENE pecado2 = new_scene(
-    "Pecado 2 - 'Tu me lembras um pecador.'",
+    "Pecado 2 - \"Tu me lembras um pecador.\"",
     file_content("ASCII/pecado2Init.txt"),
     file_content("captions/pecado2-3.txt")
+);
+
+SCENE escadaria = new_scene(
+    "Escadaria",
+    file_content("ASCII/escadaria.txt"),
+    file_content("captions/edificiodaluz-escadaria.txt")
+);
+
+SCENE yellowking = new_scene(
+    "Um estranho",
+    file_content("ASCII/yellowking.txt"),
+    "Ele me olhou intensamente por alguns segundos. Respondi apenas por olhá-lo de volta, quase em uma competição infantil. Confesso que me causou uma certa irritação.  \n- Tu me lembras um pecador."
 );
 
 SCENE filaEspera = new_scene(
@@ -105,11 +120,11 @@ SCENE filaEspera = new_scene(
     file_content("ASCII/fila1.txt"),
     "Posso tanto andar para ver a fila ou esperar aqui.\n\n [ESPERAR, ANDAR]"
 );
-
-    #pragma endregion
+    
+#pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2, filaEspera
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2,filaEspera,escadaria,yellowking
 };
 
 #pragma endregion
@@ -143,10 +158,13 @@ ANIM animations[MAX_SCENES] = {
 
 void default_rou() {}
 
-#pragma region INIT_ROU
+#pragma region PECADO2_ROU
 
-
-#pragma endregion
+void edificiodaluz_rou() {
+    changeCapt(file_content("captions/edificiodaluz-1.txt"));
+    showQuickScene(escadaria, 1);
+    showQuickScene(yellowking, 1);
+}
 
 void esperarFila_rou(){
     changeCapt("Entro na fila e espero alguns minutos.");
@@ -179,7 +197,6 @@ void entrarFila_rou(){
     }
 }
 
-
 void criaturasVagantes_rou(){
     if(!(hasItem(&inv, "FarolLuz"))){
         changeCapt("Vejo as criaturas durante sua caminhada para a fila gigante. Pergunto a elas qual o motivo dessa fila toda.");
@@ -200,11 +217,11 @@ void pecado2_rou() {
     changeCapt(file_content("captions/pecado2-1.txt"));
     changeCapt(file_content("captions/pecado2-2.txt"));
     ANS = {"EDIFICIO DA LUZ", "CRIATURAS VAGANTES", "ENTRAR FILA"};
-    FUNCS = {default_rou, criaturasVagantes_rou, entrarFila_rou};
+    FUNCS = {edificiodaluz_rou, criaturasVagantes_rou, entrarFila_rou};
     while(1) {handle_choice(&pecado2, 1, ans, funcs, 3);}
     music.stop();
 } 
-
+#pragma endregion
 
 #pragma region PECADO1_ROU
 
@@ -329,7 +346,7 @@ void pecado1_rou() {
 
     #pragma endregion
 
-    #pragma region LANDING_ROU
+#pragma region LANDING_ROU
 
 void start_rou() {
     initializeInventory(&inv);
@@ -343,6 +360,6 @@ void start_rou() {
     pecado1_rou();
 }
 
-    #pragma endregion
+#pragma endregion
 
 #pragma endregion

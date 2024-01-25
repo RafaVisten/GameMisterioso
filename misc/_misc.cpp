@@ -47,27 +47,31 @@ char* file_content(const char* path) {
     FILE *file;
     long file_size;
 
-    // Abre o arquvio no modo de leitura
+    // Open the file in read mode
     file = fopen(path, "r");
 
     if (file == NULL) return err;
-    // Calcula o tamanho do arquivo
+
+    // Calculate the size of the file
     fseek(file, 0, SEEK_END);
     file_size = ftell(file);
     rewind(file);
 
-    // Alocar memoria
-    buffer = (char *)malloc(file_size * sizeof(char));
+    // Allocate memory with an extra byte for the null terminator
+    buffer = (char *)malloc((file_size + 1) * sizeof(char));
 
     if (buffer == NULL) {
         fclose(file);
         return err;
     }
 
-    // Salvar o arquivo na variável buffer
+    // Read the file into the buffer
     fread(buffer, 1, file_size, file);
 
-    // Fechar o arquivo
+    // Null-terminate the buffer
+    buffer[file_size] = '\0';
+
+    // Close the file
     fclose(file);
 
     return buffer;
