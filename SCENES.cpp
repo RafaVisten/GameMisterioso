@@ -138,6 +138,11 @@ SCENE veioLuz2 = new_scene(
     "-Agora escuta-me com atenção. Só viverás se reconhecer o que digo.\n"
 
 );
+SCENE morte1 = new_scene(
+    "O QUE SÃO OS OSSOS?",
+    file_content("ASCII/morte1.txt"),
+    file_content("o que são os ossos? (digite sua resposta)")
+);
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -177,7 +182,14 @@ void default_rou() {}
 
 #pragma region PECADO2_ROU
 
-void veioLuz_rou(){
+void acertaResposta(){
+    changeCapt(file_content("captions/acerta_resposta.txt"));
+    changeCapt("Ele levanta de sua cadeira e arrasta-a para o lado, e então dá um passo ao lado deixando-me\n abrir a porta. Entro no quarto escuro a minha frente.\n");
+}
+
+void erraResposta(){
+
+
 
 }
 
@@ -219,7 +231,9 @@ void edificiodaluz_rou() {
     showQuickScene(veioLuz,1);
     showQuickScene(veioLuz2,1);
     changeCapt(file_content("captions/poema.txt"));
-    
+    ANS = {"EMOCOES", "SENTIMENTOS"};
+    FUNCS = {acertaResposta, acertaResposta};
+    handle_answer(&morte1,1,ans,funcs,erraResposta,2);
 }
 
 void esperarFila_rou(){

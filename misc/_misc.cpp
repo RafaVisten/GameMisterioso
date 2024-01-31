@@ -41,6 +41,31 @@ bool handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functio
     return true;
 }
 
+bool handle_answer(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[],  functionPtr default, int num_options) {
+    char input[25];
+
+    show(*prompt, colorIndex);
+
+    ask(input);
+    int i;
+    for (i = 0; i < num_options; i++) {
+        if (answer(input, answers[i])) {
+            clear();
+            funcs[i]();
+            return true;
+        }
+    }
+    if (answer(input, "QUIT")) {endwin(); exit(0);}
+    else if (answer(input, "")) {clear(); return false;}
+    else {
+        clear();
+        default();
+        return false;
+    }
+    clear();
+    return true;
+}
+
 char* file_content(const char* path) {
     char* err = (char*)"Error";
     char *buffer;
