@@ -120,7 +120,24 @@ SCENE filaEspera = new_scene(
     file_content("ASCII/fila1.txt"),
     "Posso tanto andar para ver a fila ou esperar aqui.\n\n [ESPERAR, ANDAR]"
 );
-    
+
+SCENE mentirCena = new_scene(
+    "",
+    "",
+    "Você tem a opção de mentir ou não que possua uma mão:\n [MENTIR] ou [OFERECER MAO]\n"
+
+);
+SCENE veioLuz = new_scene(
+    "",
+    file_content("ASCII/veio.txt"),
+    file_content("captions/veio.txt")
+);
+SCENE veioLuz2 = new_scene(
+    "",
+    file_content("ASCII/veio2.txt"),
+    "-Agora escuta-me com atenção. Só viverás se reconhecer o que digo.\n"
+
+);
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -160,6 +177,26 @@ void default_rou() {}
 
 #pragma region PECADO2_ROU
 
+void veioLuz_rou(){
+
+}
+
+
+void mentirCena_rou(){
+    changeCapt(file_content("captions/mentirCena1.txt"));
+
+}
+
+void oferecerMao_rou() {
+    changeCapt("Lembrando de meu pequeno incidente no banheiro, e sendo comovido pela história do homem, resolvo oferecer minha mão já cortada.\n");
+    changeCapt(file_content("captions/oferecerMao1.txt"));
+    changeCapt(file_content("captions/oferecerMao2.txt"));
+    changeCapt("Você ganhou uma passagem VIP! - Item adicionado ao inventário.\n");
+    if(!(hasItem(&inv, "passeVIP"))){
+        addItem(&inv, "passeVIP");
+    }
+}
+
 void edificiodaluz_rou() {
     changeCapt(file_content("captions/edificiodaluz-1.txt"));
     showQuickScene(escadaria, 1);
@@ -171,6 +208,14 @@ void edificiodaluz_rou() {
     changeCapt(file_content("captions/edificiodaluz-2.txt"));
     changeCapt(file_content("captions/edificiodaluz-3.txt"));
     changeCapt(file_content("captions/edificiodaluz-4.txt"));
+    if(hasItem(&inv, "mao esquerda")){
+        ANS = {"MENTIR", "OFERECER MAO"};
+        FUNCS = {mentirCena_rou, oferecerMao_rou};
+        handle_choice(&mentirCena,1, ans,funcs,2);
+
+    }
+    changeCapt(file_content("captions/edificiodaluz-5.txt"));
+    changeCapt(file_content("captions/edificiodaluz-6.txt"));
 }
 
 void esperarFila_rou(){
