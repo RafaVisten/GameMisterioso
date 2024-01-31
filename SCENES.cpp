@@ -139,14 +139,38 @@ SCENE veioLuz2 = new_scene(
 
 );
 SCENE morte1 = new_scene(
-    "O QUE SÃO OS OSSOS?",
+    "O QUE SAO OS OSSOS?",
     file_content("ASCII/morte1.txt"),
-    file_content("o que são os ossos? (digite sua resposta)")
+    "O que são os ossos? (digite sua resposta)"
+);
+
+SCENE semPasse = new_scene(
+    "- Por favor volte para o final da fila. Não irei mais falar.",
+    file_content("ASCII/fila1.txt"),
+    "[TENTAR CONVENCER / <enter> para sair]"
+);
+
+SCENE comPasse = new_scene(
+    "- Por favor volte para o final da fila. Não irei mais falar.",
+    file_content("ASCII/fila1.txt"),
+    "[ENTREGAR PASSE / NAO ENTREGAR]"
+);
+
+SCENE veia1 = new_scene(
+    "Dentro do farol",
+    file_content("ASCII/veia.txt"),
+    file_content("captions/veia1.txt") 
+);
+SCENE viscerasDeus = new_scene(
+    "Quadro",
+    file_content("ASCII/quadro.txt"),
+    file_content("captions/quadro.txt")  
 );
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
-    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2,filaEspera,escadaria,yellowking
+    telaInicial,pecado1,tapete,vasoquebrado,pia,chave,espelho,poca,mao,porta,saida,assimilacao,pecado2,filaEspera,escadaria,yellowking,
+    semPasse,comPasse
 };
 
 #pragma endregion
@@ -182,21 +206,28 @@ void default_rou() {}
 
 #pragma region PECADO2_ROU
 
-void acertaResposta(){
+void acertaResposta(){ 
+    addItem(&inv, "pequenoQuadro");
     changeCapt(file_content("captions/acerta_resposta.txt"));
     changeCapt("Ele levanta de sua cadeira e arrasta-a para o lado, e então dá um passo ao lado deixando-me\n abrir a porta. Entro no quarto escuro a minha frente.\n");
+    changeCapt(file_content("captions/dentrofarol1.txt"));
+    showQuickScene(veia1, 1);
+    changeCapt(file_content("captions/veia2.txt"));
+    showQuickScene(viscerasDeus,1);
 }
 
 void erraResposta(){
-
-
-
+    music.pause();
+    sfx.openFromFile("audio/jumpscare2.wav");
+    sfx.play();
+    changeCapt("O velho me olha com nojo e o mesmo cansaço de antes.\n-Morres, pois não conhece o próprio corpo. Não passas de um parasita em um pedaço de carne ambulante. Muitos outros tiveram o mesmo final.\n");
+    sleep(5);
+    changeCapt("Não me esquecerei mais de quem sou agora. Não mais.\n");
+    exit(0);
 }
-
 
 void mentirCena_rou(){
     changeCapt(file_content("captions/mentirCena1.txt"));
-
 }
 
 void oferecerMao_rou() {
@@ -223,8 +254,9 @@ void edificiodaluz_rou() {
     if(hasItem(&inv, "mao esquerda")){
         ANS = {"MENTIR", "OFERECER MAO"};
         FUNCS = {mentirCena_rou, oferecerMao_rou};
-        handle_choice(&mentirCena,1, ans,funcs,2);
-
+        while(!handle_choice(&mentirCena,1, ans,funcs,2));
+    }else{
+        changeCapt(file_content("captions/edificiodaluz-7.txt"));
     }
     changeCapt(file_content("captions/edificiodaluz-5.txt"));
     changeCapt(file_content("captions/edificiodaluz-6.txt"));
@@ -241,6 +273,16 @@ void esperarFila_rou(){
     sleep(3);
     changeCapt("Não parece ter mudança alguma.");
 }
+
+void convencer() {
+    changeCapt("Tento chamar a atenção do guarda, em vão.");
+}
+
+void entregar() {
+    changeCapt(file_content("captions/entregarpasse.txt"));
+    // ir pecado 3
+}
+
 void andarFila_rou(){
     changeCapt(file_content("captions/andarFila.txt"));
     changeCapt("'Você é tão forte e quieto, que eu esqueço que você sofre.'");
@@ -250,8 +292,16 @@ void andarFila_rou(){
     changeCapt("- Essa informação é confidencial para aqueles que entrarem.");
     changeCapt("Estranho.");
     changeCapt("- Por favor volte para o final da fila. Não irei mais falar.");
+    if(hasItem(&inv, "passeVIP")) {
+        ANS = {"ENTREGAR PASSE", "NAO ENTREGAR"};
+        FUNCS = {entregar, convencer};
+        while(handle_choice(&comPasse, 1, ans, funcs, 1));
+    } else {
+        ANS = {"TENTAR CONVENCER"};
+        FUNCS = {convencer};
+        while(handle_choice(&semPasse, 1, ans, funcs, 1));
+    }
 }
-
 
 void entrarFila_rou(){
     if(!(hasItem(&inv, "FarolLuz"))){
