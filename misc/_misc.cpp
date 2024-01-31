@@ -41,7 +41,7 @@ bool handle_choice(SCENE* prompt, int colorIndex, const char* answers[], functio
     return true;
 }
 
-bool handle_answer(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[],  functionPtr default, int num_options) {
+bool handle_answer(SCENE* prompt, int colorIndex, const char* answers[], functionPtr funcs[], functionPtr def, int num_options) {
     char input[25];
 
     show(*prompt, colorIndex);
@@ -59,7 +59,7 @@ bool handle_answer(SCENE* prompt, int colorIndex, const char* answers[], functio
     else if (answer(input, "")) {clear(); return false;}
     else {
         clear();
-        default();
+        def();
         return false;
     }
     clear();
