@@ -166,6 +166,17 @@ SCENE viscerasDeus = new_scene(
     file_content("ASCII/quadro.txt"),
     file_content("captions/quadro.txt")  
 );
+SCENE inicioPecado3 = new_scene(
+    "Pecado 3 - 'O morte, torne-se minha lâmina por uma última vez.'",
+    file_content("ASCII/hotel1.txt"),
+    file_content("captions/pecado3-1.txt")
+
+);
+SCENE manequim = new_scene(
+    "Manequim",
+    file_content("ASCII/manequim.txt"),
+    file_content("captions/manequim.txt")
+);
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -203,6 +214,13 @@ ANIM animations[MAX_SCENES] = {
 // (Definir da última para a primeira) //
 
 void default_rou() {}
+
+#pragma region PECADO3_ROU
+
+
+
+#pragma endregion
+
 
 #pragma region PECADO2_ROU
 
@@ -280,7 +298,9 @@ void convencer() {
 
 void entregar() {
     changeCapt(file_content("captions/entregarpasse.txt"));
-    // ir pecado 3
+    showQuickScene(inicioPecado3,1);
+    showQuickScene(manequim, 1);
+
 }
 
 void andarFila_rou(){
