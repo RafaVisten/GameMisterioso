@@ -216,6 +216,10 @@ void edificiodaluz_rou() {
     }
     changeCapt(file_content("captions/edificiodaluz-5.txt"));
     changeCapt(file_content("captions/edificiodaluz-6.txt"));
+    showQuickScene(veioLuz,1);
+    showQuickScene(veioLuz2,1);
+    changeCapt(file_content("captions/poema.txt"));
+    
 }
 
 void esperarFila_rou(){
