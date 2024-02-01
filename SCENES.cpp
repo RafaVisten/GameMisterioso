@@ -198,6 +198,36 @@ SCENE aiko = new_scene(
     file_content("ASCII/aiko.txt"),
     "Ao lado dela, um túmulo com um espelho. E o meu túmulo.  E difícil encontrar o mar e molhar apenas os pés.\n\n[ENTRAR TUMULO] [NAO ENTRAR]\n"
 );
+SCENE veSimbolos1 = new_scene(
+    "SOL",
+    file_content("ASCII/sol.txt"),
+    file_content("captions/sol.txt")
+);
+SCENE banheiroPecado = new_scene(
+    "Banheiro",
+    file_content("ASCII/pia.txt"),
+    file_content("captions/banheiroPecado3.txt")
+);
+SCENE banheiro2Pecado = new_scene(
+    "Banheiro",
+    file_content("ASCII/pia.txt"),
+    file_content("captions/banheiro2.txt")
+);
+SCENE piaBanheiro = new_scene(
+    "Pia",
+    file_content("ASCII/pia.txt"),
+    "[OBSERVAR ESPELHO] [ABRIR TORNEIRA]\n"
+);
+SCENE vasoPecado3 = new_scene(
+    "Vaso",
+    file_content("ASCII/vaso.txt"),
+    "Dessa vez o vaso exala uma confiança mais do que o de antes.\n\n[DESCARGA] [COLOCAR MAO] [INVESTIGAR]"
+);
+SCENE banheiraP3 = new_scene(
+    "Banheira",
+    file_content("ASCII/banheiraP3.txt"),
+    file_content("captions/banheiraP3-1.txt")
+);
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -329,20 +359,122 @@ void naoTumulo(){
     changeCapt("Abro meus olhos e me vejo dentro da mesma banheira de qual vim. Meus pensamentos já não me invadem mais.\n\n\nFIM!");
     exit(0);
 }
-void elevador_rou(){
-    showQuickScene(elevador1,1);
-    showQuickScene(elevador2,1);
+void elevadorRitual(){
     changeCapt("Entro novamente no elevador. Sua aparência já não me assusta. Aperto o nove.\nO elevador fecha as portas e começa a descer.\n");
     showQuickScene(tumulo,1);
     ANS = {"ENTRAR TUMULO","NAO ENTRAR"};
     FUNCS = {entrarTumulo, naoTumulo};
     while(!handle_choice(&aiko, 1, ans, funcs, 2));
 }
+void irBanheiro();
+void elevador_rou(){
+    showQuickScene(elevador1,1);
+    showQuickScene(elevador2,1);
+}
+void veSimbolos(){
+    showQuickScene(veSimbolos1,1);                                                                                                                              
+    if(hasItem(&inv,"aneis")){
+        changeCapt(file_content("captions/veSimbolos3.txt"));
+        changeCapt(file_content("captions/sol2.txt"));
+        addItem(&inv, "laminaBranca");
+        changeCapt("Você ganhou uma lâmina branca! Item adicionado ao inventário");
+        changeCapt(file_content("captions/sol3.txt"));
+        elevadorRitual();
+    }
+    showQuickScene(manequim, 1);                                                                                                                                                                                                                                                    
+}
+void espelho3(){
+    changeCapt(file_content("captions/espelho3.txt"));
+    irBanheiro();
+}
+void torneira2(){
+    changeCapt("Um barulho indescritível e horrendo começa a essoar pelo cano:\n\nSete anéis caem pela torneira. Depois oito. Por fim, nove.\n");
+    addItem(&inv,"aneis");
+    changeCapt("Você ganhou 9 aneis! Itens adicionados ao inventário");
+    irBanheiro();
+
+}
+void piaPecado3(){
+    ANS = {"OBSERVAR ESPELHO", "ABRIR TORNEIRA"};
+    FUNCS = {espelho3, torneira2};
+    while (!handle_choice(&piaBanheiro,1,ans,funcs,2));
+}
+void tapetePecado3(){
+    changeCapt("Novamente, o mesmo tapete. Agora, mais novo e limpo.\n");
+    changeCapt("Levanto o tapete levemente. Abaixo vejo um pequeno buraco, o qual contém o Sol.");
+    changeCapt("Você ganhou o sol! Item adicionado ao inventário");
+    addItem(&inv, "sol");
+    irBanheiro();
+}
+void descarga3(){
+    changeCapt(file_content("captions/descarga3.txt"));
+}
+void colocarmao3(){
+    if(hasItem(&inv, "mao esquerda")){
+        changeCapt("Resolvo novamente colocar a mão no vaso. Esse tipo de atitude impensada agora já é comum pra mim.");
+        music.pause();
+        sfx.openFromFile("audio/scream.wav");
+        sfx.play();
+        changeCapt("Quando retiro meu braço do vaso, percebo que perdi a outra mão.");
+        addItem(&inv, "mao");
+        sfx.stop();
+        changeCapt("Item mão adicionada ao inventário!");
+        music.play();
+    }else{
+        changeCapt("Resolvo colocar a mão no vaso. Esse tipo de atitude inpensada não é muito comum pra mim.");
+        music.pause();
+        sfx.openFromFile("audio/scream.wav");
+        sfx.play();
+        blink(mao, 1, 0.0625, 16);
+        showQuickScene(mao, 2);
+        addItem(&inv, "mao esquerda");
+        sfx.stop();
+        music.play();
+        changeCapt("Quando retiro meu braço do vaso, percebo que perdi uma mão.\nDefinitivamente não foi uma opção muito boa.");
+    }
+}
+void investigar3(){
+    changeCapt("Ao observar o fundo do vaso, vejo um reflexo de mim mesmo.");
+    changeCapt(file_content("captions/investigar3.txt"));
+}
+void vasoPecado3_rou(){
+    ANS = {"DESCARGA", "COLOCAR MAO", "INVESTIGAR"};
+    FUNCS = {descarga3, colocarmao3, investigar3};
+    while (!handle_choice(&vasoPecado3,1,ans,funcs,3));
+}
+void afunda_rou(){
+    changeCapt(file_content("captions/final3.txt"));
+    changeCapt(file_content("captions/final3-2.txt"));
+    changeCapt(file_content("captions/final3-3.txt"));
+    exit(0);
+}
+void esquecer_rou(){
+    changeCapt(file_content("captions/esquecer.txt"));
+    irBanheiro();
+}
+void banheiraPecado3(){
+    changeCapt(file_content("captions/banheiraP3.txt"));
+    ANS = {"AFUNDAR NA BANHEIRA", "ESQUECER DO PASSADO"};
+    FUNCS = {afunda_rou, esquecer_rou};
+    while(!handle_choice(&banheiraP3,1,ans,funcs,2));
+}
+void irBanheiro(){
+    if(hasItem(&inv,"aneis") && hasItem(&inv,"sol") && hasItem(&inv,"mao esquerda")){
+        ANS = {"PIA", "TAPETE", "VASO", "BANHEIRA"};
+        FUNCS = {piaPecado3,tapetePecado3,vasoPecado3_rou,banheiraPecado3};
+        while(!handle_choice(&banheiro2Pecado,1,ans,funcs,4));
+    }else{
+        ANS = {"PIA", "TAPETE", "VASO"};
+        FUNCS = {piaPecado3,tapetePecado3,vasoPecado3_rou};
+        while(!handle_choice(&banheiroPecado,1,ans,funcs,3));
+    }
+}
+
 void entregar() {
     changeCapt(file_content("captions/entregarpasse.txt"));
     showQuickScene(inicioPecado3,1);
     ANS = {"VER SIMBOLOS","IR BANHEIRO","ENTRAR NO ELEVADOR"};
-    FUNCS = {default_rou, default_rou, elevador_rou};
+    FUNCS = {veSimbolos, irBanheiro, elevador_rou};
     while(!handle_choice(&manequim, 1, ans, funcs, 3));
 }
 
