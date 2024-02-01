@@ -177,6 +177,27 @@ SCENE manequim = new_scene(
     file_content("ASCII/manequim.txt"),
     file_content("captions/manequim.txt")
 );
+
+SCENE elevador1 = new_scene(
+    "NO ELEVADOR",
+    file_content("ASCII/elevador.txt"),
+    file_content("captions/elevador.txt")
+);
+SCENE elevador2 = new_scene(
+    "NUMERO 9",
+    file_content("ASCII/elevador2.txt"),
+    file_content("captions/elevador2.txt")
+);
+SCENE tumulo = new_scene(
+    "TUMULO",
+    file_content("ASCII/tumulo1.txt"),
+    file_content("captions/tumulo.txt")
+);
+SCENE aiko = new_scene(
+    "Depois do ritual",
+    file_content("ASCII/aiko.txt"),
+    "Ao lado dela, um túmulo com um espelho. E o meu túmulo.  E difícil encontrar o mar e molhar apenas os pés.\n\n[ENTRAR TUMULO] [NAO ENTRAR]\n"
+);
 #pragma endregion
 
 SCENE scenes[MAX_SCENES] = {
@@ -283,7 +304,7 @@ void edificiodaluz_rou() {
     changeCapt(file_content("captions/poema.txt"));
     ANS = {"EMOCOES", "SENTIMENTOS"};
     FUNCS = {acertaResposta, acertaResposta};
-    handle_answer(&morte1,1,ans,funcs,erraResposta,2);
+    while(!handle_answer(&morte1,1,ans,funcs,erraResposta,2));
 }
 
 void esperarFila_rou(){
@@ -295,13 +316,36 @@ void esperarFila_rou(){
 void convencer() {
     changeCapt("Tento chamar a atenção do guarda, em vão.");
 }
-
+void entrarTumulo(){
+    music.openFromFile("audio/musicaFinal.wav");
+    music.setLoop(true);
+    music.play();
+    changeCapt(file_content("captions/final2.txt"));
+    music.stop();
+    exit(0);
+}
+void naoTumulo(){
+    changeCapt(file_content("captions/finalNaotumulo.txt"));
+    changeCapt("Abro meus olhos e me vejo dentro da mesma banheira de qual vim. Meus pensamentos já não me invadem mais.\n\n\nFIM!");
+    exit(0);
+}
+void elevador_rou(){
+    showQuickScene(elevador1,1);
+    showQuickScene(elevador2,1);
+    changeCapt("Entro novamente no elevador. Sua aparência já não me assusta. Aperto o nove.\nO elevador fecha as portas e começa a descer.\n");
+    showQuickScene(tumulo,1);
+    ANS = {"ENTRAR TUMULO","NAO ENTRAR"};
+    FUNCS = {entrarTumulo, naoTumulo};
+    while(!handle_choice(&aiko, 1, ans, funcs, 2));
+}
 void entregar() {
     changeCapt(file_content("captions/entregarpasse.txt"));
     showQuickScene(inicioPecado3,1);
-    showQuickScene(manequim, 1);
-
+    ANS = {"VER SIMBOLOS","IR BANHEIRO","ENTRAR NO ELEVADOR"};
+    FUNCS = {default_rou, default_rou, elevador_rou};
+    while(!handle_choice(&manequim, 1, ans, funcs, 3));
 }
+
 
 void andarFila_rou(){
     changeCapt(file_content("captions/andarFila.txt"));
